@@ -16,7 +16,11 @@ let
       pkgSet;
     # An evluation of the specified system version with only the modules and no config
     scrubbedEval = lib.evalModules {
-      modules = [];
+      modules = [
+      ./modules/hello.nix
+      ./modules/taskserver/default.nix
+
+      ];
       # modules = (import (./modules/hello.nix) { inherit lib; inherit pkgs;});
       # modules = [ ./modules/hello.nix];
       # modules = [
@@ -26,10 +30,10 @@ let
       # }
       # ];
       # # Forward the filtered package set and the modules path
-      # specialArgs = {
-      #   pkgs = scrubDerivations "pkgs" pkgs;
-      #   modulesPath = pkgs.path + /nixos/modules;
-      # };
+      specialArgs = {
+        pkgs = scrubDerivations "pkgs" pkgs;
+        modulesPath = pkgs.path + /nixos/modules;
+      };
     };
   in (import (pkgs.path + /nixos/doc/manual)) rec {
     # From parent scope
@@ -39,10 +43,7 @@ let
     version = "0.0.1";
     revision = "release-${version}";
 
-    extraSources = [
-      ./modules/hello.nix
-      ./modules/taskserver/default.nix
-    ];
+    # extraSources = [ ];
     options = scrubbedEval.options;
   };
 in mkNixosManual
