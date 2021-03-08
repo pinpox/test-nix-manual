@@ -39,7 +39,10 @@ let
     version = "0.0.1";
     revision = "release-${version}";
 
-    extraSources = [ ./modules/hello.nix ];
+    extraSources = [
+      ./modules/hello.nix
+      ./modules/taskserver/default.nix
+    ];
     options = scrubbedEval.options;
   };
 in mkNixosManual
